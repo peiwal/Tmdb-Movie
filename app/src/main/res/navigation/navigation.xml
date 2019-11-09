@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/navigation" app:startDestination="@id/fragmentPopularMovies">
+
+    <fragment android:id="@+id/fragmentPopularMovies"
+              android:name="petrov.ivan.tmdb.ui.popularMovies.FragmentPopularMovies"
+              android:label="@string/app_name">
+        <action android:id="@+id/action_fragmentPopularMovies_to_fragmentMovieInfo"
+                app:destination="@id/fragmentMovieInfo" app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left" app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+        <action android:id="@+id/action_fragmentPopularMovies_to_fragmentSearch" app:destination="@id/fragmentSearch"
+                app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left" app:popExitAnim="@anim/slide_out_right"/>
+        <action android:id="@+id/action_fragmentPopularMovies_to_fragmentAbout" app:destination="@id/aboutFragment"
+                app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left" app:popExitAnim="@anim/slide_out_right"/>
+        <action android:id="@+id/action_fragmentPopularMovies_to_fragmentFavorites"
+                app:destination="@id/favoritesFragment" app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left" app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment android:id="@+id/fragmentMovieInfo" android:name="petrov.ivan.tmdb.ui.movieInfo.FragmentMovieInfo"
+    >
+        <argument android:name=" movieData" app:argType="string"/>
+    </fragment>
+    <fragment android:id="@+id/fragmentSearch" android:name="petrov.ivan.tmdb.ui.search.FragmentSearch"
+    >
+        <action android:id="@+id/action_fragmentSearch_to_fragmentMovieInfo" app:destination="@id/fragmentMovieInfo"
+                app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left" app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment android:id="@+id/aboutFragment" android:name="petrov.ivan.tmdb.ui.FragmentAbout"
+              android:label="@string/about"/>
+    <fragment android:id="@+id/favoritesFragment" android:name="petrov.ivan.tmdb.ui.favorites.FragmentFavorites"
+              android:label="@string/favorites">
+        <action android:id="@+id/action_favoritesFragment_to_fragmentMovieInfo"
+                app:destination="@id/fragmentMovieInfo" app:enterAnim="@anim/slide_in_right"
+                app:popEnterAnim="@anim/slide_in_left" app:exitAnim="@anim/slide_out_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+</navigation>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="petrov.ivan.tmdb.ui.movieInfo.FragmentMovieInfo">
+    <data>
+        <variable
+                name="movieInfoViewModel"
+                type="petrov.ivan.tmdb.ui.movieInfo.MovieInfoViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ScrollView android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+            <include android:layout_height="match_parent"
+                     android:layout_width="match_parent"
+                     layout="@layout/movie_layout"
+                     app:movie="@{movieInfoViewModel.getMovie()}"/>
+        </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="end|bottom"
+            style="@style/AppTheme.Fab"
+            android:layout_margin="@dimen/spacing_normal"
+            app:srcCompat="@drawable/star"
+            android:tint="@android:color/white"
+            android:onClick="@{() -> movieInfoViewModel.fbFavoriteClick()}"
+            android:id="@+id/fbFavorite"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
