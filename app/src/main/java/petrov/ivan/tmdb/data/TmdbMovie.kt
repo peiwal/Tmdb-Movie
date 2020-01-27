@@ -1,6 +1,7 @@
 package petrov.ivan.tmdb.data
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 data class TmdbMovie(
     var id: Int,
@@ -18,7 +19,7 @@ data class TmdbMovie(
     val releaseDate: String,
     @field:Json(name = "backdrop_path")
     val backdropPath: String?
-)
+): Serializable
 
 data class TmdbMovieResponse (
     val results: List<TmdbMovie>

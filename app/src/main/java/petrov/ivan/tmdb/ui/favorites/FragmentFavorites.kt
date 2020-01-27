@@ -23,9 +23,7 @@ class FragmentFavorites : BaseFragmentViewModel() {
     private lateinit var favoritesViewModel: FavoritesViewModel
     private val itemClickListener = MovieListAdapter.MovieListener { movie ->
         this.findNavController().navigate(
-            FragmentFavoritesDirections.actionFavoritesFragmentToFragmentMovieInfo(
-                tmdbComponents.getMoshi().adapter(TmdbMovie::class.java).toJson(movie)
-            )
+            FragmentFavoritesDirections.actionFavoritesFragmentToFragmentMovieInfo(movie)
         )
     }
     private val fragmentPopularMoviesComponent: FragmentFavoritesComponent by lazy(mode = LazyThreadSafetyMode.NONE) {

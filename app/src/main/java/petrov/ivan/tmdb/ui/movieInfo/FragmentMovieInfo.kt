@@ -1,6 +1,5 @@
 package petrov.ivan.tmdb.ui.movieInfo
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,12 +16,11 @@ import petrov.ivan.tmdb.ui.base.BaseFragmentViewModel
 import timber.log.Timber
 
 
-class FragmentMovieInfo : BaseFragmentViewModel() {
+class FragmentMovieInfo : BaseFragmentViewModel(), DeleteFromFavoritesDialogFragment.DialogClickListener {
 
     private lateinit var tmdbMovie: TmdbMovie
     private lateinit var dataSource: FavoritesDatabaseDao
     private lateinit var movieInfoViewModel: MovieInfoViewModel
-    private lateinit var dialogDelete: AlertDialog
     private lateinit var binding: FragmentMovieInfoBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -30,9 +28,7 @@ class FragmentMovieInfo : BaseFragmentViewModel() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_info, container, false)
 
         arguments?.let {
-            val movieDataJson = FragmentMovieInfoArgs.fromBundle(it).movieData
-
-            tmdbMovie =  tmdbComponents.getMoshi().adapter(TmdbMovie::class.java).fromJson(movieDataJson)!!
+            tmdbMovie = FragmentMovieInfoArgs.fromBundle(it).movieData
         } ?: Timber.e("incorrect state: arguments not found")
 
         dataSource = FavoritesDatabase.invoke(application).favoritesDatabaseDao
@@ -67,18 +63,14 @@ class FragmentMovieInfo : BaseFragmentViewModel() {
     }
 
     private fun showDialogDelete() {
-        if (!::dialogDelete.isInitialized) {
-            dialogDelete = AlertDialog.Builder(getContext())
-                .setTitle(R.string.dialog_delete_favorites_title)
-                .setPositiveButton(R.string.dialog_delete_button) {dialogInterface, i ->  movieInfoViewModel.deleteMovieFromFavorite()}
-                .setNegativeButton(R.string.dialog_cancel_buttion) {dialogInterface, i ->  }
-                .show()
+        getFragmentManager()?.let {
+            activity
+            val dialogFrag = DeleteFromFavoritesDialogFragment(this)
+            dialogFrag.show(it, "dialog delete");
         }
-        dialogDelete.show()
     }
 
-    override fun onStop() {
-        super.onStop()
-        if (::dialogDelete.isInitialized) dialogDelete.dismiss()
+    override fun onDeleteClick() {
+        movieInfoViewModel.deleteMovieFromFavorite()
     }
 }

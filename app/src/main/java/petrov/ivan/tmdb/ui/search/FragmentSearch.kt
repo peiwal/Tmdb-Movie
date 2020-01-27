@@ -30,9 +30,7 @@ class FragmentSearch : BaseFragmentViewModel() {
     private lateinit var viewModel: SearchViewModel
     private val itemClickListener = SuggestionsAdapter.SuggestionListener { movie ->
         this.findNavController().navigate(
-            FragmentSearchDirections.actionFragmentSearchToFragmentMovieInfo(
-                tmdbComponents.getMoshi().adapter(TmdbMovie::class.java).toJson(movie)
-            )
+            FragmentSearchDirections.actionFragmentSearchToFragmentMovieInfo(movie)
         )
     }
     private val searchFragmentComponent: SearchFragmentComponent by lazy(mode = LazyThreadSafetyMode.NONE) {
