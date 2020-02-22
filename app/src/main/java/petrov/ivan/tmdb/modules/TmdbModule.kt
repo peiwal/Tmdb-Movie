@@ -1,5 +1,8 @@
 package petrov.ivan.tmdb.modules
 
+import android.content.Context
+import android.view.View
+import android.widget.TextView
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -15,24 +18,19 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @Module(includes = arrayOf(OkHttpClientModule::class))
 class TmdbModule {
 
-    @Provides
-    fun tmdbApi(retrofit: Retrofit): TmdbApi {
-        return retrofit.create(TmdbApi::class.java)
-    }
-
     @Singleton
     @Provides
-    fun retrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
+    fun tmdbApi(okHttpClient: OkHttpClient): TmdbApi {
+        val retrofit = Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(AppConstants.TMDB_BASE_URL)
             .addConverterFactory(moshiConverterFactory())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
+        return retrofit.create(TmdbApi::class.java)
     }
 
-    @Provides
-    fun moshiConverterFactory(): MoshiConverterFactory {
+    private fun moshiConverterFactory(): MoshiConverterFactory {
         return MoshiConverterFactory.create()
     }
 

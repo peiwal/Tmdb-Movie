@@ -1,5 +1,8 @@
 package petrov.ivan.tmdb.modules
 
+import android.content.Context
+import android.view.View
+import android.widget.TextView
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -13,24 +16,23 @@ import timber.log.Timber
 class OkHttpClientModule {
 
     @Provides
-    fun client(loggingInterceptor: HttpLoggingInterceptor, authInterceptor: Interceptor): OkHttpClient {
+    fun client(): OkHttpClient {
         if (BuildConfig.DEBUG) {
             return OkHttpClient().newBuilder()
                 .cache(null)
-                .addInterceptor(authInterceptor)
-                .addInterceptor(loggingInterceptor)
+                .addInterceptor(authInterceptor())
+                .addInterceptor(httpLoggingInterceptor())
                 .build()
         } else {
             return OkHttpClient().newBuilder()
                 .cache(null)
-                .addInterceptor(loggingInterceptor)
-                .addInterceptor(authInterceptor)
+                .addInterceptor(httpLoggingInterceptor())
+                .addInterceptor(authInterceptor())
                 .build()
         }
     }
 
-    @Provides
-    fun httpLoggingInterceptor(): HttpLoggingInterceptor {
+    private fun httpLoggingInterceptor(): HttpLoggingInterceptor {
         val httpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { message ->
             Timber.d(message)
         })
@@ -38,8 +40,8 @@ class OkHttpClientModule {
         return httpLoggingInterceptor
     }
 
-    @Provides
-    fun authInterceptor(): Interceptor {
+
+    private fun authInterceptor(): Interceptor {
         return Interceptor { chain ->
             val newUrl = chain.request().url()
                 .newBuilder()
@@ -54,5 +56,4 @@ class OkHttpClientModule {
             chain.proceed(newRequest)
         }
     }
-
 }
