@@ -13,17 +13,19 @@ class FavoritesViewModel(private val database: FavoritesDatabaseDao, application
     val favoritesList = MutableLiveData<List<TmdbMovie>>()
 
     fun loadData() {
-        viewModelScope.launchOnIO(runOnIO = {
-            val movieList = database.getAllRecords()
-            val mutableList = ArrayList<TmdbMovie>()
-            with(movieList) {
-                this?.forEach {
-                    mutableList.add(MovieConverter.convertToTmdbMovie(it))
-                }
-                mutableList
-            }
-        }) {
-            favoritesList.value = it
+        viewModelScope.launchOnIO(runOnIO = ::getFavorites,
+            resultOnMain =  ::setFavorites)
+    }
+
+    private fun getFavorites(): ArrayList<TmdbMovie> {
+        val result = ArrayList<TmdbMovie>()
+        database.getAllRecords()?.forEach {
+            result.add(MovieConverter.convertToTmdbMovie(it))
         }
+        return result
+    }
+
+    private fun setFavorites(value: ArrayList<TmdbMovie>) {
+        favoritesList.value = value
     }
 }
