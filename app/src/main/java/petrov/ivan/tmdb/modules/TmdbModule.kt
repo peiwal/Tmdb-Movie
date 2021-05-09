@@ -1,11 +1,6 @@
 package petrov.ivan.tmdb.modules
 
-import android.content.Context
-import android.view.View
-import android.widget.TextView
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -32,12 +27,5 @@ class TmdbModule {
 
     private fun moshiConverterFactory(): MoshiConverterFactory {
         return MoshiConverterFactory.create()
-    }
-
-    @Provides
-    fun moshi(): Moshi {
-        return Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
     }
 }

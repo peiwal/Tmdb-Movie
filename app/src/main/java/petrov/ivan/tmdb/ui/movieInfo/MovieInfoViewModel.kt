@@ -4,11 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.database.FavoritesDatabaseDao
+import petrov.ivan.tmdb.ui.utils.launchOnIO
 import petrov.ivan.tmdb.utils.MovieConverter
 
 class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application: Application, movie: TmdbMovie) : AndroidViewModel(application) {
@@ -30,16 +28,13 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
         }
     }
 
-    fun getMovie() : TmdbMovie {
+    fun getMovie(): TmdbMovie {
         return tmdbMovie.value!!
     }
 
     private fun insertToDatabase(movie: TmdbMovie) {
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
-                database.insert(MovieConverter.converToMovie(movie))
-                updateFavoriteValue(movie)
-            }
+        viewModelScope.launchOnIO (runOnIO = { database.insert(MovieConverter.converToMovie(movie)) }) {
+            updateFavoriteValue(movie)
         }
     }
 
@@ -49,24 +44,14 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
     }
 
     private fun deleteFromDatabase(movie: TmdbMovie) {
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
-                database.delete(movie.id)
-                updateFavoriteValue(movie)
-            }
+        viewModelScope.launchOnIO(runOnIO = { database.delete(movie.id) }) {
+            updateFavoriteValue(movie)
         }
     }
 
     private fun updateFavoriteValue(movie: TmdbMovie) {
-        viewModelScope.launch(Dispatchers.Main) {
-            isFavorite.value = getById(movie)
-        }
-    }
-
-    suspend fun getById(movie: TmdbMovie) : Boolean {
-        return withContext(Dispatchers.IO) {
-            val tmdbMovie = database.getById(movie.id)
-            tmdbMovie != null
+        viewModelScope.launchOnIO(runOnIO = { database.getById(movie.id) != null }) {
+            isFavorite.value = it
         }
     }
 

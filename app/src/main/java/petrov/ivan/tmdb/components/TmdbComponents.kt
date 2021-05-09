@@ -12,5 +12,4 @@ import petrov.ivan.tmdb.service.TmdbApi
 @Component(modules = arrayOf(TmdbModule::class))
 interface TmdbComponents {
     fun getTmdbService(): TmdbApi
-    fun getMoshi(): Moshi
 }
