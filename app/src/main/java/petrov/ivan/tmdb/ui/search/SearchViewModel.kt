@@ -4,17 +4,15 @@ import android.app.Application
 import android.text.TextUtils
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.*
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import petrov.ivan.tmdb.R
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.service.TmdbApi
 import timber.log.Timber
 
 class SearchViewModel(private val movieService: TmdbApi, application: Application) : AndroidViewModel(application) {
-    private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     val searchText = MutableLiveData<String>()
     val searchItems = MutableLiveData<ArrayList<TmdbMovie>>()
     val eventErrorLoadData = MutableLiveData<Boolean>()
@@ -25,7 +23,7 @@ class SearchViewModel(private val movieService: TmdbApi, application: Applicatio
             return
         }
 
-        uiScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Main) {
             val request = movieService.getMovieByQuery(searchText!!, getApplication<Application>().getString(R.string.response_language))
 
             try {
@@ -40,10 +38,5 @@ class SearchViewModel(private val movieService: TmdbApi, application: Applicatio
                 eventErrorLoadData.value = true
             }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
     }
 }

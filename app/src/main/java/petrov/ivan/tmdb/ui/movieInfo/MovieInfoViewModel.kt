@@ -3,15 +3,15 @@ package petrov.ivan.tmdb.ui.movieInfo
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.database.FavoritesDatabaseDao
-import petrov.ivan.tmdb.database.MovieDB
 import petrov.ivan.tmdb.utils.MovieConverter
 
 class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application: Application, movie: TmdbMovie) : AndroidViewModel(application) {
-    private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     val tmdbMovie = MutableLiveData<TmdbMovie>()
     val eventNeedShowDialog =  MutableLiveData<Boolean>()
     val isFavorite = MutableLiveData<Boolean>()
@@ -35,7 +35,7 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
     }
 
     private fun insertToDatabase(movie: TmdbMovie) {
-        uiScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.IO) {
                 database.insert(MovieConverter.converToMovie(movie))
                 updateFavoriteValue(movie)
@@ -49,7 +49,7 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
     }
 
     private fun deleteFromDatabase(movie: TmdbMovie) {
-        uiScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.IO) {
                 database.delete(movie.id)
                 updateFavoriteValue(movie)
@@ -58,7 +58,7 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
     }
 
     private fun updateFavoriteValue(movie: TmdbMovie) {
-        uiScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Main) {
             isFavorite.value = getById(movie)
         }
     }
@@ -72,10 +72,5 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
 
     fun dialogShowed() {
         eventNeedShowDialog.value = false
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
     }
 }

@@ -14,15 +14,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ScrollView
-                android:layout_width="match_parent"
+        <ScrollView android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="none">
 
-            <include android:layout_height="match_parent"
-                     android:layout_width="match_parent"
-                     layout="@layout/movie_layout"
-                     app:movie="@{movieInfoViewModel.getMovie()}"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <include android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintWidth_default="percent"
+                        app:layout_constraintWidth_percent="0.7"
+                        layout="@layout/movie_layout"
+                        app:movie="@{movieInfoViewModel.getMovie()}"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -23,8 +23,8 @@
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                />
+                        android:layout_margin="6dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"
@@ -32,7 +32,6 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:layout_alignParentBottom="true"
-                        style="@style/AppTheme.Fab"
                         android:layout_gravity="end|bottom"
                         android:layout_margin="@dimen/spacing_normal"
                         app:srcCompat="@drawable/ic_search"

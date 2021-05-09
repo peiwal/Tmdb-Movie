@@ -6,16 +6,24 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="cardViewStyle">@style/AppTheme.CardView</item>
+        <item name="floatingActionButtonStyle">@style/AppTheme.Fab</item>
     </style>
 
     <style name="AppTheme.Fab" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="elevation">4dp</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="tint">@android:color/white</item>
     </style>
 
     <style name="TextAppearance.Subtitle" parent="TextAppearance.MaterialComponents.Headline1" >
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="AppTheme.CardView" parent="CardView">
+        <item name="cardCornerRadius">10dp</item>
     </style>
 
 </resources>
