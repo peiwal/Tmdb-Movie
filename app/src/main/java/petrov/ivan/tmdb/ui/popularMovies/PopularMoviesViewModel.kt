@@ -3,15 +3,15 @@ package petrov.ivan.tmdb.ui.popularMovies
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import petrov.ivan.tmdb.R
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.service.TmdbApi
 import timber.log.Timber
 
 class PopularMoviesViewModel(private val movieService: TmdbApi, application: Application) : AndroidViewModel(application) {
-    private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     val recyclerViewPosition = MutableLiveData<Int>()
     val movieList = MutableLiveData<List<TmdbMovie>>()
     val eventLoadComplete = MutableLiveData<Boolean>()
@@ -19,7 +19,7 @@ class PopularMoviesViewModel(private val movieService: TmdbApi, application: App
     val eventOnFabClick = MutableLiveData<Boolean>()
 
     fun loadData() {
-        uiScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Main) {
             val request = movieService.getPopularMovie(getApplication<Application>().getString(R.string.response_language))
 
             try {
@@ -40,10 +40,5 @@ class PopularMoviesViewModel(private val movieService: TmdbApi, application: App
 
     fun onFabSearchClick() {
         eventOnFabClick.value = true
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
     }
 }

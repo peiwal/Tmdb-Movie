@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <import type="java.lang.Float"/>
         <variable name="movie" type="petrov.ivan.tmdb.data.TmdbMovie"/>
         <variable name="clickListener" type="petrov.ivan.tmdb.ui.adapters.MovieListAdapter.MovieListener"/>
     </data>
