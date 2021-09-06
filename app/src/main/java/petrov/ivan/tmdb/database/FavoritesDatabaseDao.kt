@@ -3,9 +3,6 @@ package petrov.ivan.tmdb.database
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import petrov.ivan.tmdb.data.TmdbMovie
 
 @Dao
 interface FavoritesDatabaseDao {

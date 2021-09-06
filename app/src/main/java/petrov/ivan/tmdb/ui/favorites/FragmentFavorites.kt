@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import petrov.ivan.tmdb.R
-import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.database.FavoritesDatabase
 import petrov.ivan.tmdb.database.FavoritesDatabaseDao
 import petrov.ivan.tmdb.ui.adapters.MovieListAdapter
@@ -44,7 +43,7 @@ class FragmentFavorites : BaseFragmentViewModel() {
     override fun createViewModel() {
         val viewModelFactory = FavoritesViewModelFactory(dataSource, application)
         favoritesViewModel =
-            ViewModelProviders.of(
+            ViewModelProvider(
                 this, viewModelFactory
             ).get(FavoritesViewModel::class.java)
     }

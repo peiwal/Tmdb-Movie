@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import petrov.ivan.tmdb.R
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.database.FavoritesDatabase
@@ -16,7 +17,7 @@ import petrov.ivan.tmdb.ui.base.BaseFragmentViewModel
 import timber.log.Timber
 
 
-class FragmentMovieInfo : BaseFragmentViewModel(), DeleteFromFavoritesDialogFragment.DialogClickListener {
+class FragmentMovieInfo : BaseFragmentViewModel() {
 
     private lateinit var tmdbMovie: TmdbMovie
     private lateinit var dataSource: FavoritesDatabaseDao
@@ -24,7 +25,7 @@ class FragmentMovieInfo : BaseFragmentViewModel(), DeleteFromFavoritesDialogFrag
     private lateinit var binding: FragmentMovieInfoBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_info, container, false)
 
         arguments?.let {
@@ -39,7 +40,7 @@ class FragmentMovieInfo : BaseFragmentViewModel(), DeleteFromFavoritesDialogFrag
     override fun createViewModel() {
         val viewModelFactory = MovieInfoViewModelFactory(dataSource, application, tmdbMovie)
 
-        movieInfoViewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieInfoViewModel::class.java)
+        movieInfoViewModel = ViewModelProvider(this, viewModelFactory).get(MovieInfoViewModel::class.java)
 
         binding.movieInfoViewModel = movieInfoViewModel
     }
@@ -48,29 +49,25 @@ class FragmentMovieInfo : BaseFragmentViewModel(), DeleteFromFavoritesDialogFrag
         movieInfoViewModel.let {
             it.isFavorite.observe(this, Observer { value ->
                 binding.fbFavorite.setImageDrawable(
-                    if (value) resources.getDrawable(R.drawable.delete, null)
-                    else resources.getDrawable(R.drawable.star, null)
+                    if (value) ContextCompat.getDrawable(requireContext(), R.drawable.delete)
+                    else ContextCompat.getDrawable(requireContext(), R.drawable.star)
                 )
             })
 
-            it.eventNeedShowDialog.observe(this, Observer { value ->
+            it.eventNeedShowDialog.observe(this) { value ->
                 if (value) {
                     showDialogDelete()
                     it.dialogShowed()
                 }
-            })
+            }
         }
     }
 
     private fun showDialogDelete() {
-        getFragmentManager()?.let {
-            activity
-            val dialogFrag = DeleteFromFavoritesDialogFragment(this)
-            dialogFrag.show(it, "dialog delete");
+        activity
+        val dialogFrag = DeleteFromFavoritesDialogFragment {
+            movieInfoViewModel.deleteMovieFromFavorite()
         }
-    }
-
-    override fun onDeleteClick() {
-        movieInfoViewModel.deleteMovieFromFavorite()
+        dialogFrag.show(parentFragmentManager, "dialog delete")
     }
 }

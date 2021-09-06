@@ -3,7 +3,6 @@ package petrov.ivan.tmdb.ui.movieInfo
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import petrov.ivan.tmdb.application.TmdbApplication
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.database.FavoritesDatabaseDao
 

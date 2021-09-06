@@ -6,12 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import petrov.ivan.tmdb.R
-import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.databinding.FragmentPopularMoviesBinding
 import petrov.ivan.tmdb.service.TmdbApi
 import petrov.ivan.tmdb.ui.adapters.MovieListAdapter
@@ -40,7 +39,7 @@ class FragmentPopularMovies: BaseFragmentViewModel() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_popular_movies, container, false)
 
@@ -50,7 +49,7 @@ class FragmentPopularMovies: BaseFragmentViewModel() {
     override fun createViewModel() {
         val viewModelFactory = PopularMoviesViewModelFactory(movieService, application)
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
+        viewModel = ViewModelProvider(this, viewModelFactory)
             .get(PopularMoviesViewModel::class.java)
 
         binding.viewModel = viewModel
@@ -69,14 +68,6 @@ class FragmentPopularMovies: BaseFragmentViewModel() {
                 }
             })
 
-            it.eventOnFabClick.observe(this, Observer { value ->
-                if (value) {
-                    this.findNavController()
-                        .navigate(FragmentPopularMoviesDirections.actionFragmentPopularMoviesToFragmentSearch())
-                    viewModel.eventOnFabClick.value = false
-                }
-            })
-
             it.movieList.observe(this, Observer {
                 (binding.recyclerView.adapter as MovieListAdapter).items = ArrayList(it)
             })
@@ -90,6 +81,11 @@ class FragmentPopularMovies: BaseFragmentViewModel() {
             viewModel.recyclerViewPosition.value = 0
             binding.swipeRefreshLayout.setRefreshing(true)
             viewModel.loadData()
+        }
+
+        binding.fbSearch.setOnClickListener {
+            this.findNavController()
+                .navigate(FragmentPopularMoviesDirections.actionFragmentPopularMoviesToFragmentSearch())
         }
 
         binding.recyclerView.adapter = fragmentPopularMoviesComponent.getMovieListAdapter()

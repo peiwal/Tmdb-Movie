@@ -1,8 +1,5 @@
 package petrov.ivan.tmdb.modules
 
-import android.content.Context
-import android.view.View
-import android.widget.TextView
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor

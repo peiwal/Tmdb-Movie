@@ -1,7 +1,5 @@
 package petrov.ivan.tmdb.components
 
-import android.view.View
-import com.squareup.moshi.Moshi
 import dagger.Component
 import petrov.ivan.tmdb.interfaces.Singleton
 import petrov.ivan.tmdb.modules.TmdbModule

@@ -16,7 +16,6 @@ class PopularMoviesViewModel(private val movieService: TmdbApi, application: App
     val movieList = MutableLiveData<List<TmdbMovie>>()
     val eventLoadComplete = MutableLiveData<Boolean>()
     val eventErrorLoadData = MutableLiveData<Boolean>()
-    val eventOnFabClick = MutableLiveData<Boolean>()
 
     fun loadData() {
         viewModelScope.launch(Dispatchers.Main) {
@@ -25,7 +24,7 @@ class PopularMoviesViewModel(private val movieService: TmdbApi, application: App
             try {
                 val response = request.await()
                 if(response.isSuccessful){
-                    movieList.value = response.body()?.results?.let{it} ?: ArrayList()
+                    movieList.value = response.body()?.results ?: ArrayList()
                 } else {
                     Timber.i("loadData ${response.errorBody().toString()}")
                 }
@@ -36,9 +35,5 @@ class PopularMoviesViewModel(private val movieService: TmdbApi, application: App
 
             eventLoadComplete.value = true
         }
-    }
-
-    fun onFabSearchClick() {
-        eventOnFabClick.value = true
     }
 }

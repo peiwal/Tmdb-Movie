@@ -1,7 +1,6 @@
 package petrov.ivan.tmdb.ui.utils
 
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide

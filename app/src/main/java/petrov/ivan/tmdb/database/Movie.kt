@@ -3,7 +3,6 @@ package petrov.ivan.tmdb.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import petrov.ivan.tmdb.data.TmdbMovie
 
 @Entity(tableName = "favorites_movie")
 data class MovieDB(

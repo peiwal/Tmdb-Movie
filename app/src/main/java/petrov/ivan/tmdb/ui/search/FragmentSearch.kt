@@ -9,15 +9,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search.*
 import petrov.ivan.tmdb.R
-import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.service.TmdbApi
-import petrov.ivan.tmdb.ui.base.BaseFragment
 import petrov.ivan.tmdb.ui.adapters.SuggestionsAdapter
 import petrov.ivan.tmdb.ui.base.BaseFragmentViewModel
 import petrov.ivan.tmdb.ui.search.features.DaggerSearchFragmentComponent
@@ -49,7 +47,7 @@ class FragmentSearch : BaseFragmentViewModel() {
 
     override fun createViewModel() {
         val viewModelFactory = SearchViewModelFactory(movieService, application)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
     }
 
     override fun registerObservers() {
