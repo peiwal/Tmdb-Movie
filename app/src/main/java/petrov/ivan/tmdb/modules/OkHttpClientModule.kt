@@ -9,7 +9,7 @@ import petrov.ivan.tmdb.AppConstants
 import petrov.ivan.tmdb.BuildConfig
 import timber.log.Timber
 
-@Module(includes = arrayOf(ContextModule::class))
+@Module
 class OkHttpClientModule {
 
     @Provides
@@ -30,9 +30,9 @@ class OkHttpClientModule {
     }
 
     private fun httpLoggingInterceptor(): HttpLoggingInterceptor {
-        val httpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { message ->
+        val httpLoggingInterceptor = HttpLoggingInterceptor { message ->
             Timber.d(message)
-        })
+        }
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return httpLoggingInterceptor
     }

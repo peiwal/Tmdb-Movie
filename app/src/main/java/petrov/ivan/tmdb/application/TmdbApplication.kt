@@ -3,7 +3,6 @@ package petrov.ivan.tmdb.application
 import android.app.Application
 import petrov.ivan.tmdb.components.DaggerTmdbComponents
 import petrov.ivan.tmdb.components.TmdbComponents
-import petrov.ivan.tmdb.modules.ContextModule
 import timber.log.Timber
 
 class TmdbApplication : Application() {
@@ -15,7 +14,6 @@ class TmdbApplication : Application() {
 
     private val tmdbComponents: TmdbComponents by lazy(mode = LazyThreadSafetyMode.NONE) {
         DaggerTmdbComponents.builder()
-            .contextModule(ContextModule(this))
             .build()
     }
 
