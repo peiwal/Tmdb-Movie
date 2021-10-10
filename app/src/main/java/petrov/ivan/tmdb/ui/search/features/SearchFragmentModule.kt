@@ -4,9 +4,10 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import petrov.ivan.tmdb.ui.adapters.SuggestionsAdapter
+import petrov.ivan.tmdb.ui.adapters.listeners.SuggestionListener
 
 @Module
-class SearchFragmentModule(private val context: Context, private val clickListener: SuggestionsAdapter.SuggestionListener) {
+class SearchFragmentModule(private val context: Context, private val clickListener: SuggestionListener) {
 
     @Provides
     @SearchFragmentScope

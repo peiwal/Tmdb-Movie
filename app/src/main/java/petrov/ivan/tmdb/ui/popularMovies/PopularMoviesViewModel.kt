@@ -2,38 +2,35 @@ package petrov.ivan.tmdb.ui.popularMovies
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import petrov.ivan.tmdb.R
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.service.TmdbApi
-import timber.log.Timber
+import petrov.ivan.tmdb.ui.popularMovies.repository.MovieRepository
 
-class PopularMoviesViewModel(private val movieService: TmdbApi, application: Application) : AndroidViewModel(application) {
-    val recyclerViewPosition = MutableLiveData<Int>()
-    val movieList = MutableLiveData<List<TmdbMovie>>()
-    val eventLoadComplete = MutableLiveData<Boolean>()
-    val eventErrorLoadData = MutableLiveData<Boolean>()
+class PopularMoviesViewModel(movieService: TmdbApi, application: Application) : AndroidViewModel(application) {
+    private val _pagingData: MutableLiveData<PagingData<TmdbMovie>> = MutableLiveData<PagingData<TmdbMovie>>(PagingData.empty())
+    val pagingData: LiveData<PagingData<TmdbMovie>> = _pagingData
 
-    fun loadData() {
-        viewModelScope.launch(Dispatchers.Main) {
-            val request = movieService.getPopularMovie(getApplication<Application>().getString(R.string.response_language))
+    private val repository = MovieRepository(movieService)
 
-            try {
-                val response = request.await()
-                if(response.isSuccessful){
-                    movieList.value = response.body()?.results ?: ArrayList()
-                } else {
-                    Timber.i("loadData ${response.errorBody().toString()}")
-                }
-            } catch (e: Throwable){
-                Timber.e("loadData ${e}")
-                eventErrorLoadData.value = true
+    init {
+        viewModelScope.launch {
+            searchRepo().collectLatest {
+                _pagingData.value = it
             }
-
-            eventLoadComplete.value = true
         }
+    }
+
+    private fun searchRepo(): Flow<PagingData<TmdbMovie>> {
+        val responseLanguage = getApplication<Application>().getString(R.string.response_language)
+        return repository.getSearchResultStream(responseLanguage).cachedIn(viewModelScope)
     }
 }

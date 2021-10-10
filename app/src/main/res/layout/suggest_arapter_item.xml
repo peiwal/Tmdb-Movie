@@ -5,14 +5,12 @@
     <data>
         <variable name="movie"
                   type="petrov.ivan.tmdb.data.TmdbMovie"/>
-        <variable name="clickListener" type="petrov.ivan.tmdb.ui.adapters.SuggestionsAdapter.SuggestionListener"/>
     </data>
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/llContainer"
-            android:onClick="@{() -> clickListener.onClick(movie)}">
+            android:id="@+id/llContainer">
 
         <ImageView android:id="@+id/imgView"
                    android:layout_width="40dp"
@@ -22,8 +20,7 @@
                    android:layout_marginStart="@dimen/spacing_normal"
                    android:layout_marginEnd="@dimen/spacing_normal"
                    tools:srcCompat="@tools:sample/avatars[0]"
-                   app:sugestionItemImage="@{movie}"
-        />
+                   app:sugestionItemImage="@{movie}" />
 
         <TextView android:id="@+id/tvTitle"
                   android:layout_gravity="center_vertical"

@@ -1,19 +1,26 @@
 package petrov.ivan.tmdb.ui.popularMovies
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import petrov.ivan.tmdb.R
 import petrov.ivan.tmdb.databinding.FragmentPopularMoviesBinding
 import petrov.ivan.tmdb.service.TmdbApi
-import petrov.ivan.tmdb.ui.adapters.MovieListAdapter
+import petrov.ivan.tmdb.ui.adapters.MovieListPagingAdapter
+import petrov.ivan.tmdb.ui.adapters.listeners.MovieListener
 import petrov.ivan.tmdb.ui.base.BaseFragmentViewModel
 import petrov.ivan.tmdb.ui.popularMovies.features.DaggerFragmentPopularMoviesComponent
 import petrov.ivan.tmdb.ui.popularMovies.features.FragmentPopularMoviesComponent
@@ -24,7 +31,7 @@ class FragmentPopularMovies: BaseFragmentViewModel() {
 
     private lateinit var binding: FragmentPopularMoviesBinding
     private lateinit var viewModel: PopularMoviesViewModel
-    private val itemClickListener = MovieListAdapter.MovieListener { movie ->
+    private val itemClickListener = MovieListener { movie ->
         this.findNavController().navigate(
             FragmentPopularMoviesDirections.actionFragmentPopularMoviesToFragmentMovieInfo(movie)
         )
@@ -34,9 +41,15 @@ class FragmentPopularMovies: BaseFragmentViewModel() {
             .fragmentPopularMoviesModule(FragmentPopularMoviesModule(application, itemClickListener))
             .build()
     }
+    private val adapter: MovieListPagingAdapter by lazy {  fragmentPopularMoviesComponent.getMovieListAdapter() }
     private val movieService: TmdbApi by lazy(mode = LazyThreadSafetyMode.NONE) {
         tmdbComponents.getTmdbService()
     }
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) = retryLoading()
+    }
+    private val connectivityManager by lazy { requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager }
+    private val networkChangeFilter = NetworkRequest.Builder().build()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -44,6 +57,24 @@ class FragmentPopularMovies: BaseFragmentViewModel() {
             inflater, R.layout.fragment_popular_movies, container, false)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            fragmentPopularMoviesComponent.getMovieListAdapter().refresh()
+        }
+
+        binding.fbSearch.setOnClickListener {
+            this.findNavController()
+                .navigate(FragmentPopularMoviesDirections.actionFragmentPopularMoviesToFragmentSearch())
+        }
+
+        binding.recyclerView.apply {
+            adapter = fragmentPopularMoviesComponent.getMovieListAdapter()
+            setItemViewCacheSize(10)
+        }
     }
 
     override fun createViewModel() {
@@ -55,51 +86,43 @@ class FragmentPopularMovies: BaseFragmentViewModel() {
         binding.viewModel = viewModel
     }
 
+    override fun onResume() {
+        super.onResume()
+        connectivityManager.registerNetworkCallback(networkChangeFilter, networkCallback)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        connectivityManager.unregisterNetworkCallback(networkCallback)
+    }
+
     override fun registerObservers() {
-        viewModel.let {
-            it.eventLoadComplete.observe(this, Observer { value ->
-                if (value) onLoadDataComplete()
-            })
+        viewModel.pagingData.observe(viewLifecycleOwner) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                adapter.submitData(it)
+            }
+        }
 
-            it.eventErrorLoadData.observe(this, Observer { value ->
-                if (value) {
-                    Snackbar.make(binding.root, R.string.error_load_data, Snackbar.LENGTH_LONG).show()
-                    viewModel.eventErrorLoadData.value = false
+        lifecycleScope.launch {
+            adapter.loadStateFlow.collectLatest { loadState ->
+                binding.swipeRefreshLayout.isRefreshing = loadState.mediator?.refresh is LoadState.Loading
+                val errorState = when {
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                    else -> null
                 }
-            })
-
-            it.movieList.observe(this, Observer {
-                (binding.recyclerView.adapter as MovieListAdapter).items = ArrayList(it)
-            })
+                errorState?.let {
+                    Snackbar.make(binding.root, R.string.error_load_data, Snackbar.LENGTH_LONG)
+                        .show()
+                }
+            }
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.swipeRefreshLayout.setOnRefreshListener() {
-            viewModel.recyclerViewPosition.value = 0
-            binding.swipeRefreshLayout.setRefreshing(true)
-            viewModel.loadData()
+    private fun retryLoading() {
+        lifecycleScope.launch {
+            adapter.retry()
         }
-
-        binding.fbSearch.setOnClickListener {
-            this.findNavController()
-                .navigate(FragmentPopularMoviesDirections.actionFragmentPopularMoviesToFragmentSearch())
-        }
-
-        binding.recyclerView.adapter = fragmentPopularMoviesComponent.getMovieListAdapter()
-
-        viewModel.movieList.value ?: viewModel.loadData()
-    }
-
-    private fun onLoadDataComplete() {
-        binding.recyclerView.layoutManager?.scrollToPosition(viewModel.recyclerViewPosition.value ?: 0)
-        binding.swipeRefreshLayout.setRefreshing(false)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.recyclerViewPosition.value = (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
     }
 }

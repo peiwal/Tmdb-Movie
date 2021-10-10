@@ -5,9 +5,9 @@ import android.view.View
 
 abstract class BaseFragmentViewModel: BaseFragment() {
 
-    abstract protected fun createViewModel()
+    protected abstract fun createViewModel()
 
-    abstract protected fun registerObservers()
+    protected abstract fun registerObservers()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

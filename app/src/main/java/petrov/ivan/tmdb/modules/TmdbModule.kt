@@ -1,6 +1,5 @@
 package petrov.ivan.tmdb.modules
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -20,7 +19,6 @@ class TmdbModule {
             .client(okHttpClient)
             .baseUrl(AppConstants.TMDB_BASE_URL)
             .addConverterFactory(moshiConverterFactory())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
         return retrofit.create(TmdbApi::class.java)
     }

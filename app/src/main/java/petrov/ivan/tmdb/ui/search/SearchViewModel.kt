@@ -24,10 +24,8 @@ class SearchViewModel(private val movieService: TmdbApi, application: Applicatio
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            val request = movieService.getMovieByQuery(searchText!!, getApplication<Application>().getString(R.string.response_language))
-
             try {
-                val response = request.await()
+                val response = movieService.getMovieByQuery(searchText!!, getApplication<Application>().getString(R.string.response_language))
                 if (response.isSuccessful) {
                     val movieResponse = response.body()
                     val suggestions = movieResponse?.results

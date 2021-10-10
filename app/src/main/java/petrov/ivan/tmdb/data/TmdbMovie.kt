@@ -22,5 +22,9 @@ data class TmdbMovie(
 ): Serializable
 
 data class TmdbMovieResponse (
-    val results: List<TmdbMovie>
+    val results: List<TmdbMovie>,
+    @field:Json(name = "total_pages")
+    val totalPages: Int,
+    @field:Json(name = "page")
+    val page: Int
 )

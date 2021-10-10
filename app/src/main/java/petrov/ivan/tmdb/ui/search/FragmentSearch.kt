@@ -16,7 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search.*
 import petrov.ivan.tmdb.R
 import petrov.ivan.tmdb.service.TmdbApi
-import petrov.ivan.tmdb.ui.adapters.SuggestionsAdapter
+import petrov.ivan.tmdb.ui.adapters.listeners.SuggestionListener
 import petrov.ivan.tmdb.ui.base.BaseFragmentViewModel
 import petrov.ivan.tmdb.ui.search.features.DaggerSearchFragmentComponent
 import petrov.ivan.tmdb.ui.search.features.SearchFragmentComponent
@@ -26,7 +26,7 @@ import petrov.ivan.tmdb.ui.search.features.SearchFragmentModule
 class FragmentSearch : BaseFragmentViewModel() {
 
     private lateinit var viewModel: SearchViewModel
-    private val itemClickListener = SuggestionsAdapter.SuggestionListener { movie ->
+    private val itemClickListener = SuggestionListener { movie ->
         this.findNavController().navigate(
             FragmentSearchDirections.actionFragmentSearchToFragmentMovieInfo(movie)
         )

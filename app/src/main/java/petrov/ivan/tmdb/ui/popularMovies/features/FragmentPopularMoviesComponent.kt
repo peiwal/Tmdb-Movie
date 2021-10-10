@@ -1,10 +1,10 @@
 package petrov.ivan.tmdb.ui.popularMovies.features
 
 import dagger.Component
-import petrov.ivan.tmdb.ui.adapters.MovieListAdapter
+import petrov.ivan.tmdb.ui.adapters.MovieListPagingAdapter
 
 @Component(modules = arrayOf(FragmentPopularMoviesModule::class))
 @FragmentPopularMoviesScope
 interface FragmentPopularMoviesComponent {
-    fun getMovieListAdapter(): MovieListAdapter
+    fun getMovieListAdapter(): MovieListPagingAdapter
 }

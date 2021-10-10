@@ -3,15 +3,13 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="movie" type="petrov.ivan.tmdb.data.TmdbMovie"/>
-        <variable name="clickListener" type="petrov.ivan.tmdb.ui.adapters.MovieListAdapter.MovieListener"/>
     </data>
 
     <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:onClick="@{() -> clickListener.onClick(movie)}">
+            android:layout_margin="4dp">
 
         <include android:layout_height="match_parent"
                  android:layout_width="match_parent"
