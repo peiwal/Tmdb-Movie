@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_favorites.*
-import petrov.ivan.tmdb.R
 import petrov.ivan.tmdb.database.FavoritesDatabase
 import petrov.ivan.tmdb.database.FavoritesDatabaseDao
+import petrov.ivan.tmdb.databinding.FragmentFavoritesBinding
 import petrov.ivan.tmdb.ui.adapters.listeners.MovieListener
 import petrov.ivan.tmdb.ui.base.BaseFragmentViewModel
 import petrov.ivan.tmdb.ui.favorites.features.DaggerFragmentFavoritesComponent
@@ -30,12 +29,14 @@ class FragmentFavorites : BaseFragmentViewModel() {
             .build()
     }
     private lateinit var dataSource: FavoritesDatabaseDao
+    private lateinit var binding: FragmentFavoritesBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         dataSource = FavoritesDatabase.invoke(application).favoritesDatabaseDao
 
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
 
@@ -56,7 +57,7 @@ class FragmentFavorites : BaseFragmentViewModel() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.apply {
+        binding.recyclerView.apply {
             adapter = fragmentPopularMoviesComponent.getMovieListAdapter()
             setItemViewCacheSize(10)
         }

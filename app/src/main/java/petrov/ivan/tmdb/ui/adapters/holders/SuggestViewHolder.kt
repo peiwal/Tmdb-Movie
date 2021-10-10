@@ -5,13 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.databinding.SuggestArapterItemBinding
+import petrov.ivan.tmdb.ui.utils.loadSuggestionItemImage
 
 class SuggestViewHolder private constructor(val binding: SuggestArapterItemBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(tmdbMovie: TmdbMovie) {
-        binding.apply {
-            movie = tmdbMovie
-            executePendingBindings()
-        }
+        binding.tvTitle.text = tmdbMovie.title
+        binding.imgView.loadSuggestionItemImage(tmdbMovie.backdropPath)
     }
 
     companion object {

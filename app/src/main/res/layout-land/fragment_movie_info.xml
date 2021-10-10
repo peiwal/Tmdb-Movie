@@ -1,42 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:viewBindingIgnore="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:context="petrov.ivan.tmdb.ui.movieInfo.FragmentMovieInfo">
-    <data>
-        <variable
-                name="movieInfoViewModel"
-                type="petrov.ivan.tmdb.ui.movieInfo.MovieInfoViewModel" />
-    </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <ScrollView android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
-        <ScrollView android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+            <include android:id="@+id/movieLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintWidth_default="percent"
+                    app:layout_constraintWidth_percent="0.7"
+                    layout="@layout/movie_layout"/>
 
-                <include android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintWidth_default="percent"
-                        app:layout_constraintWidth_percent="0.7"
-                        layout="@layout/movie_layout"
-                        app:movie="@{movieInfoViewModel.getMovie()}"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbFavorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -44,8 +38,5 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/spacing_normal"
             app:srcCompat="@drawable/star"
-            android:tint="@android:color/white"
-            android:onClick="@{() -> movieInfoViewModel.fbFavoriteClick()}"
-            android:id="@+id/fbFavorite"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
+            android:tint="@android:color/white" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

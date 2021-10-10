@@ -13,8 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_search.*
 import petrov.ivan.tmdb.R
+import petrov.ivan.tmdb.databinding.FragmentSearchBinding
 import petrov.ivan.tmdb.service.TmdbApi
 import petrov.ivan.tmdb.ui.adapters.listeners.SuggestionListener
 import petrov.ivan.tmdb.ui.base.BaseFragmentViewModel
@@ -39,10 +39,14 @@ class FragmentSearch : BaseFragmentViewModel() {
     private val movieService: TmdbApi by lazy(mode = LazyThreadSafetyMode.NONE) {
         tmdbComponents.getTmdbService()
     }
+    private lateinit var binding: FragmentSearchBinding
+    private val searchView
+        get() = binding.searchView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
+                              savedInstanceState: Bundle?): View {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun createViewModel() {
@@ -81,7 +85,7 @@ class FragmentSearch : BaseFragmentViewModel() {
             requestFocusFromTouch()
         }
 
-        recyclerView.apply {
+        binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = searchFragmentComponent.getSuggestionsAdapter()
         }

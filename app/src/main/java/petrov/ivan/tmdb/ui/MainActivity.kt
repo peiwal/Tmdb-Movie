@@ -12,18 +12,22 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import kotlinx.android.synthetic.main.activity_main.*
 import petrov.ivan.tmdb.R
+import petrov.ivan.tmdb.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration : AppBarConfiguration
     private lateinit var navController: NavController
+    private lateinit var binding: ActivityMainBinding
+    private val drawerLayout
+        get() = binding.drawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         navController = this.findNavController(R.id.myNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
@@ -35,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        NavigationUI.setupWithNavController(navView, navController)
+        NavigationUI.setupWithNavController(binding.navView, navController)
 
         val toolbar = findViewById<Toolbar>(R.id.action_bar)
         val drawable = ContextCompat.getDrawable(applicationContext, R.drawable.ic_search)

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import petrov.ivan.tmdb.R
@@ -14,6 +13,8 @@ import petrov.ivan.tmdb.database.FavoritesDatabase
 import petrov.ivan.tmdb.database.FavoritesDatabaseDao
 import petrov.ivan.tmdb.databinding.FragmentMovieInfoBinding
 import petrov.ivan.tmdb.ui.base.BaseFragmentViewModel
+import petrov.ivan.tmdb.ui.utils.loadMovieImage
+import petrov.ivan.tmdb.ui.utils.setMovieReleaseDateFormatted
 import timber.log.Timber
 
 
@@ -26,7 +27,7 @@ class FragmentMovieInfo : BaseFragmentViewModel() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_info, container, false)
+        binding = FragmentMovieInfoBinding.inflate(inflater, container, false)
 
         arguments?.let {
             tmdbMovie = FragmentMovieInfoArgs.fromBundle(it).movieData
@@ -37,12 +38,24 @@ class FragmentMovieInfo : BaseFragmentViewModel() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.fbFavorite.setOnClickListener {
+            movieInfoViewModel.fbFavoriteClick()
+        }
+        binding.movieLayout.apply {
+            imageView.loadMovieImage(tmdbMovie.backdropPath)
+            tvTitle.text = tmdbMovie.title
+            tvRating.text = tmdbMovie.voteAverage.toString()
+            tvReleaseDate.setMovieReleaseDateFormatted(tmdbMovie.releaseDate)
+            tvOverview.text = tmdbMovie.overview
+        }
+    }
+
     override fun createViewModel() {
         val viewModelFactory = MovieInfoViewModelFactory(dataSource, application, tmdbMovie)
 
         movieInfoViewModel = ViewModelProvider(this, viewModelFactory).get(MovieInfoViewModel::class.java)
-
-        binding.movieInfoViewModel = movieInfoViewModel
     }
 
     override fun registerObservers() {
