@@ -7,7 +7,8 @@ import petrov.ivan.tmdb.database.FavoritesDatabaseDao
 
 class FavoritesViewModelFactory(
     private val database: FavoritesDatabaseDao,
-    private val application: Application) : ViewModelProvider.Factory {
+    private val application: Application
+) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FavoritesViewModel::class.java)) {

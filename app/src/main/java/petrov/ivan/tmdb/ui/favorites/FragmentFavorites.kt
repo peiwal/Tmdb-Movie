@@ -31,20 +31,23 @@ class FragmentFavorites : BaseFragmentViewModel() {
     private lateinit var dataSource: FavoritesDatabaseDao
     private lateinit var binding: FragmentFavoritesBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         dataSource = FavoritesDatabase.invoke(application).favoritesDatabaseDao
 
         binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-
     override fun createViewModel() {
         val viewModelFactory = FavoritesViewModelFactory(dataSource, application)
         favoritesViewModel =
             ViewModelProvider(
-                this, viewModelFactory
+                this,
+                viewModelFactory
             ).get(FavoritesViewModel::class.java)
     }
 

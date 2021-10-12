@@ -7,8 +7,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import petrov.ivan.tmdb.AppConstants
 import petrov.ivan.tmdb.R
-import petrov.ivan.tmdb.data.TmdbMovie
-import java.util.*
+import java.util.Calendar
 
 fun TextView.setMovieReleaseDateFormatted(releaseDate: String) {
     if (!releaseDate.isEmpty()) {

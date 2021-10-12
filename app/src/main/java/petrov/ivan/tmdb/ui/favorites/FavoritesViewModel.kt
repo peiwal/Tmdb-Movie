@@ -13,8 +13,10 @@ class FavoritesViewModel(private val database: FavoritesDatabaseDao, application
     val favoritesList = MutableLiveData<List<TmdbMovie>>()
 
     fun loadData() {
-        viewModelScope.launchOnIO(runOnIO = ::getFavorites,
-            resultOnMain =  ::setFavorites)
+        viewModelScope.launchOnIO(
+            runOnIO = ::getFavorites,
+            resultOnMain = ::setFavorites
+        )
     }
 
     private fun getFavorites(): ArrayList<TmdbMovie> {

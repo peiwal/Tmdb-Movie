@@ -8,8 +8,6 @@ import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.ui.adapters.diffutils.MovieDiffUtilCallback
 import petrov.ivan.tmdb.ui.adapters.holders.MovieViewHolder
 import petrov.ivan.tmdb.ui.adapters.listeners.MovieListener
-import java.util.*
-
 
 class MovieListAdapter(val context: Context, val clickListener: MovieListener) : RecyclerView.Adapter<MovieViewHolder>() {
     var items = ArrayList<TmdbMovie>()

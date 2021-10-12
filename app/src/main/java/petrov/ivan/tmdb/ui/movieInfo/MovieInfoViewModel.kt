@@ -11,7 +11,7 @@ import petrov.ivan.tmdb.utils.MovieConverter
 
 class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application: Application, movie: TmdbMovie) : AndroidViewModel(application) {
     val tmdbMovie = MutableLiveData<TmdbMovie>()
-    val eventNeedShowDialog =  MutableLiveData<Boolean>()
+    val eventNeedShowDialog = MutableLiveData<Boolean>()
     val isFavorite = MutableLiveData<Boolean>()
 
     init {
@@ -21,7 +21,7 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
 
     fun fbFavoriteClick() {
         val movie = tmdbMovie.value ?: return
-        if (isFavorite.value?: false) {
+        if (isFavorite.value ?: false) {
             eventNeedShowDialog.value = true
         } else {
             insertToDatabase(movie)
@@ -33,7 +33,7 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
     }
 
     private fun insertToDatabase(movie: TmdbMovie) {
-        viewModelScope.launchOnIO (runOnIO = { database.insert(MovieConverter.converToMovie(movie)) }) {
+        viewModelScope.launchOnIO(runOnIO = { database.insert(MovieConverter.converToMovie(movie)) }) {
             updateFavoriteValue(movie)
         }
     }

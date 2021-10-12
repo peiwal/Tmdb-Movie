@@ -37,7 +37,6 @@ class OkHttpClientModule {
         return httpLoggingInterceptor
     }
 
-
     private fun authInterceptor(): Interceptor {
         return Interceptor { chain ->
             val newUrl = chain.request().url()

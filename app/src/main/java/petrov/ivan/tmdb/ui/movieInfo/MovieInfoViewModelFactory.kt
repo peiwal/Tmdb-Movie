@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.database.FavoritesDatabaseDao
 
-class MovieInfoViewModelFactory(private val database: FavoritesDatabaseDao,
-                                private val application: Application,
-                                private val movie: TmdbMovie) : ViewModelProvider.Factory {
+class MovieInfoViewModelFactory(
+    private val database: FavoritesDatabaseDao,
+    private val application: Application,
+    private val movie: TmdbMovie
+) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MovieInfoViewModel::class.java)) {

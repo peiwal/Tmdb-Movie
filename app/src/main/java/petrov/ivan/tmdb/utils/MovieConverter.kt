@@ -5,7 +5,8 @@ import petrov.ivan.tmdb.database.MovieDB
 
 object MovieConverter {
     fun convertToTmdbMovie(movie: MovieDB): TmdbMovie {
-        return TmdbMovie(movie.imdbId,
+        return TmdbMovie(
+            movie.imdbId,
             movie.voteAverage,
             movie.voteCount,
             movie.title,
@@ -14,11 +15,13 @@ object MovieConverter {
             movie.video,
             movie.posterPath,
             movie.releaseDate,
-            movie.backdropPath)
+            movie.backdropPath
+        )
     }
 
     fun converToMovie(tmdbMovie: TmdbMovie): MovieDB {
-        return MovieDB(tmdbMovie.id,
+        return MovieDB(
+            tmdbMovie.id,
             tmdbMovie.voteAverage,
             tmdbMovie.voteCount,
             tmdbMovie.title,
@@ -27,6 +30,7 @@ object MovieConverter {
             tmdbMovie.video,
             tmdbMovie.posterPath,
             tmdbMovie.backdropPath,
-            tmdbMovie.releaseDate)
+            tmdbMovie.releaseDate
+        )
     }
 }

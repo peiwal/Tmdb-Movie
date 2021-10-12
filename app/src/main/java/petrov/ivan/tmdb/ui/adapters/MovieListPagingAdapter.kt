@@ -8,7 +8,6 @@ import petrov.ivan.tmdb.ui.adapters.diffutils.MovieDiffUtilItemCallback
 import petrov.ivan.tmdb.ui.adapters.holders.MovieViewHolder
 import petrov.ivan.tmdb.ui.adapters.listeners.MovieListener
 
-
 class MovieListPagingAdapter(val context: Context, val clickListener: MovieListener) : PagingDataAdapter<TmdbMovie, MovieViewHolder>(
     MovieDiffUtilItemCallback()
 ) {

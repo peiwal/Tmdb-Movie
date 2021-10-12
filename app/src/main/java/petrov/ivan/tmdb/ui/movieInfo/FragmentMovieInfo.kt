@@ -17,7 +17,6 @@ import petrov.ivan.tmdb.ui.utils.loadMovieImage
 import petrov.ivan.tmdb.ui.utils.setMovieReleaseDateFormatted
 import timber.log.Timber
 
-
 class FragmentMovieInfo : BaseFragmentViewModel() {
 
     private lateinit var tmdbMovie: TmdbMovie
@@ -25,8 +24,11 @@ class FragmentMovieInfo : BaseFragmentViewModel() {
     private lateinit var movieInfoViewModel: MovieInfoViewModel
     private lateinit var binding: FragmentMovieInfoBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentMovieInfoBinding.inflate(inflater, container, false)
 
         arguments?.let {
@@ -60,12 +62,15 @@ class FragmentMovieInfo : BaseFragmentViewModel() {
 
     override fun registerObservers() {
         movieInfoViewModel.let {
-            it.isFavorite.observe(this, Observer { value ->
-                binding.fbFavorite.setImageDrawable(
-                    if (value) ContextCompat.getDrawable(requireContext(), R.drawable.delete)
-                    else ContextCompat.getDrawable(requireContext(), R.drawable.star)
-                )
-            })
+            it.isFavorite.observe(
+                this,
+                Observer { value ->
+                    binding.fbFavorite.setImageDrawable(
+                        if (value) ContextCompat.getDrawable(requireContext(), R.drawable.delete)
+                        else ContextCompat.getDrawable(requireContext(), R.drawable.star)
+                    )
+                }
+            )
 
             it.eventNeedShowDialog.observe(this) { value ->
                 if (value) {

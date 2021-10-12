@@ -3,7 +3,7 @@ package petrov.ivan.tmdb.ui.base
 import android.os.Bundle
 import android.view.View
 
-abstract class BaseFragmentViewModel: BaseFragment() {
+abstract class BaseFragmentViewModel : BaseFragment() {
 
     protected abstract fun createViewModel()
 

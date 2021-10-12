@@ -8,5 +8,4 @@ import petrov.ivan.tmdb.ui.adapters.MovieListAdapter
 interface FragmentFavoritesComponent {
 
     fun getMovieListAdapter(): MovieListAdapter
-
 }

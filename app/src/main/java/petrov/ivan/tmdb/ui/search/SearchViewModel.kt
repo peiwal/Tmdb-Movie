@@ -29,9 +29,9 @@ class SearchViewModel(private val movieService: TmdbApi, application: Applicatio
                 if (response.isSuccessful) {
                     val movieResponse = response.body()
                     val suggestions = movieResponse?.results
-                    searchItems.value = suggestions?.let{ArrayList(it.filter { it.backdropPath != null })} ?: ArrayList()
-                } else Timber.i("loadSuggest: ${response.errorBody().toString()}")
-            } catch (e: Exception){
+                    searchItems.value = suggestions?.let { ArrayList(it.filter { it.backdropPath != null }) } ?: ArrayList()
+                } else Timber.i("loadSuggest: ${response.errorBody()}")
+            } catch (e: Exception) {
                 Timber.e("loadSuggest: $e")
                 eventErrorLoadData.value = true
             }

@@ -15,10 +15,9 @@ import androidx.navigation.ui.NavigationUI
 import petrov.ivan.tmdb.R
 import petrov.ivan.tmdb.databinding.ActivityMainBinding
 
-
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration : AppBarConfiguration
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
     private val drawerLayout
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         navController = this.findNavController(R.id.myNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
-        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, bundle: Bundle? ->
+        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, _: Bundle? ->
             if (nd.id == nc.graph.startDestination) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             } else {
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-     override fun onBackPressed() {
+    override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {

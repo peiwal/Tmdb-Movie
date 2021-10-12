@@ -11,7 +11,7 @@ class SearchFragmentModule(private val context: Context, private val clickListen
 
     @Provides
     @SearchFragmentScope
-    fun suggestionsAdapter() : SuggestionsAdapter {
+    fun suggestionsAdapter(): SuggestionsAdapter {
         return SuggestionsAdapter(context, clickListener)
     }
 }

@@ -7,7 +7,7 @@ import petrov.ivan.tmdb.service.TmdbApi
 import retrofit2.HttpException
 import java.io.IOException
 
-class MoviePagingSource(private val movieService: TmdbApi, private val responseLanguage: String): PagingSource<Int, TmdbMovie>() {
+class MoviePagingSource(private val movieService: TmdbApi, private val responseLanguage: String) : PagingSource<Int, TmdbMovie>() {
     private val STARTING_PAGE_INDEX = 1
 
     override fun getRefreshKey(state: PagingState<Int, TmdbMovie>): Int? {
@@ -23,7 +23,7 @@ class MoviePagingSource(private val movieService: TmdbApi, private val responseL
 
             LoadResult.Page(
                 data = response.results,
-                prevKey = if (nextPage == STARTING_PAGE_INDEX) null else nextPage - 1 ,
+                prevKey = if (nextPage == STARTING_PAGE_INDEX) null else nextPage - 1,
                 nextKey = if (nextPage < response.totalPages) response.page.plus(1) else null
             )
         } catch (exception: IOException) {

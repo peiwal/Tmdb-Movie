@@ -22,7 +22,6 @@ import petrov.ivan.tmdb.ui.search.features.DaggerSearchFragmentComponent
 import petrov.ivan.tmdb.ui.search.features.SearchFragmentComponent
 import petrov.ivan.tmdb.ui.search.features.SearchFragmentModule
 
-
 class FragmentSearch : BaseFragmentViewModel() {
 
     private lateinit var viewModel: SearchViewModel
@@ -43,8 +42,11 @@ class FragmentSearch : BaseFragmentViewModel() {
     private val searchView
         get() = binding.searchView
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -56,19 +58,28 @@ class FragmentSearch : BaseFragmentViewModel() {
 
     override fun registerObservers() {
         viewModel.let {
-            it.searchText.observe(this, Observer { text ->
-                it.loadSuggest(text)
-            })
-
-            it.searchItems.observe(this, Observer { value ->
-                searchFragmentComponent.getSuggestionsAdapter().items = value
-            })
-            it.eventErrorLoadData.observe(this, Observer { value ->
-                if (value) {
-                    Snackbar.make(searchView, R.string.error_load_data, Snackbar.LENGTH_LONG).show()
-                    it.eventErrorLoadData.value = false
+            it.searchText.observe(
+                this,
+                Observer { text ->
+                    it.loadSuggest(text)
                 }
-            })
+            )
+
+            it.searchItems.observe(
+                this,
+                Observer { value ->
+                    searchFragmentComponent.getSuggestionsAdapter().items = value
+                }
+            )
+            it.eventErrorLoadData.observe(
+                this,
+                Observer { value ->
+                    if (value) {
+                        Snackbar.make(searchView, R.string.error_load_data, Snackbar.LENGTH_LONG).show()
+                        it.eventErrorLoadData.value = false
+                    }
+                }
+            )
         }
     }
 
@@ -99,7 +110,7 @@ class FragmentSearch : BaseFragmentViewModel() {
         hideKeyboard()
     }
 
-    private val onQueryTextListener = object: SearchView.OnQueryTextListener {
+    private val onQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(p0: String?): Boolean {
             return true
         }
@@ -119,5 +130,4 @@ class FragmentSearch : BaseFragmentViewModel() {
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0)
     }
-
 }

@@ -17,7 +17,7 @@ class TmdbApplication : Application() {
             .build()
     }
 
-    fun getTmdbComponent() : TmdbComponents {
+    fun getTmdbComponent(): TmdbComponents {
         return tmdbComponents
     }
 }

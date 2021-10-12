@@ -19,9 +19,9 @@ data class TmdbMovie(
     val releaseDate: String,
     @field:Json(name = "backdrop_path")
     val backdropPath: String?
-): Serializable
+) : Serializable
 
-data class TmdbMovieResponse (
+data class TmdbMovieResponse(
     val results: List<TmdbMovie>,
     @field:Json(name = "total_pages")
     val totalPages: Int,

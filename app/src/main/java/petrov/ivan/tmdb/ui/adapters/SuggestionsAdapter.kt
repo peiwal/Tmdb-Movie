@@ -8,8 +8,6 @@ import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.ui.adapters.diffutils.MovieDiffUtilCallback
 import petrov.ivan.tmdb.ui.adapters.holders.SuggestViewHolder
 import petrov.ivan.tmdb.ui.adapters.listeners.SuggestionListener
-import java.util.*
-
 
 class SuggestionsAdapter(val context: Context, val clickListener: SuggestionListener) : RecyclerView.Adapter<SuggestViewHolder>() {
 

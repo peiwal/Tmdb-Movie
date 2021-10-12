@@ -25,8 +25,7 @@ import petrov.ivan.tmdb.ui.popularMovies.features.DaggerFragmentPopularMoviesCom
 import petrov.ivan.tmdb.ui.popularMovies.features.FragmentPopularMoviesComponent
 import petrov.ivan.tmdb.ui.popularMovies.features.FragmentPopularMoviesModule
 
-
-class FragmentPopularMovies: BaseFragmentViewModel() {
+class FragmentPopularMovies : BaseFragmentViewModel() {
 
     private lateinit var binding: FragmentPopularMoviesBinding
     private lateinit var viewModel: PopularMoviesViewModel
@@ -40,7 +39,7 @@ class FragmentPopularMovies: BaseFragmentViewModel() {
             .fragmentPopularMoviesModule(FragmentPopularMoviesModule(application, itemClickListener))
             .build()
     }
-    private val adapter: MovieListPagingAdapter by lazy {  fragmentPopularMoviesComponent.getMovieListAdapter() }
+    private val adapter: MovieListPagingAdapter by lazy { fragmentPopularMoviesComponent.getMovieListAdapter() }
     private val movieService: TmdbApi by lazy(mode = LazyThreadSafetyMode.NONE) {
         tmdbComponents.getTmdbService()
     }
@@ -50,8 +49,11 @@ class FragmentPopularMovies: BaseFragmentViewModel() {
     private val connectivityManager by lazy { requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager }
     private val networkChangeFilter = NetworkRequest.Builder().build()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentPopularMoviesBinding.inflate(inflater, container, false)
         return binding.root
     }

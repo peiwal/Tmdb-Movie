@@ -2,9 +2,7 @@ package petrov.ivan.tmdb.ui.adapters.holders
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import petrov.ivan.tmdb.R
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.databinding.PopularMovieAdapterItemBinding
 import petrov.ivan.tmdb.ui.utils.loadMovieImage
