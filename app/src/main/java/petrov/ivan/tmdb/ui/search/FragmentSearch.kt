@@ -52,19 +52,12 @@ class FragmentSearch : BaseFragmentViewModel() {
     }
 
     override fun createViewModel() {
-        val viewModelFactory = SearchViewModelFactory(movieService, application)
+        val viewModelFactory = SearchViewModelFactory(movieService, application = application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
     }
 
     override fun registerObservers() {
         viewModel.let {
-            it.searchText.observe(
-                this,
-                Observer { text ->
-                    it.loadSuggest(text)
-                }
-            )
-
             it.searchItems.observe(
                 this,
                 Observer { value ->

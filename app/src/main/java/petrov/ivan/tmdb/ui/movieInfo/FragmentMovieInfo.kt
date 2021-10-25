@@ -14,7 +14,7 @@ import petrov.ivan.tmdb.database.FavoritesDatabaseDao
 import petrov.ivan.tmdb.databinding.FragmentMovieInfoBinding
 import petrov.ivan.tmdb.ui.base.BaseFragmentViewModel
 import petrov.ivan.tmdb.ui.utils.loadMovieImage
-import petrov.ivan.tmdb.ui.utils.setMovieReleaseDateFormatted
+import petrov.ivan.tmdb.ui.utils.parseMovieReleaseYear
 import timber.log.Timber
 
 class FragmentMovieInfo : BaseFragmentViewModel() {
@@ -49,7 +49,7 @@ class FragmentMovieInfo : BaseFragmentViewModel() {
             imageView.loadMovieImage(tmdbMovie.backdropPath)
             tvTitle.text = tmdbMovie.title
             tvRating.text = tmdbMovie.voteAverage.toString()
-            tvReleaseDate.setMovieReleaseDateFormatted(tmdbMovie.releaseDate)
+            tvReleaseDate.text = parseMovieReleaseYear(tmdbMovie.releaseDate)
             tvOverview.text = tmdbMovie.overview
         }
     }

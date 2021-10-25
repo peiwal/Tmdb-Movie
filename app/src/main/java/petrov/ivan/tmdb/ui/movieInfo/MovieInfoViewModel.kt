@@ -28,10 +28,6 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
         }
     }
 
-    fun getMovie(): TmdbMovie {
-        return tmdbMovie.value!!
-    }
-
     private fun insertToDatabase(movie: TmdbMovie) {
         viewModelScope.launchOnIO(runOnIO = { database.insert(MovieConverter.converToMovie(movie)) }) {
             updateFavoriteValue(movie)

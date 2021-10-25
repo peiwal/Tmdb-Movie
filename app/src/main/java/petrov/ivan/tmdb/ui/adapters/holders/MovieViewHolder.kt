@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.databinding.PopularMovieAdapterItemBinding
 import petrov.ivan.tmdb.ui.utils.loadMovieImage
-import petrov.ivan.tmdb.ui.utils.setMovieReleaseDateFormatted
+import petrov.ivan.tmdb.ui.utils.parseMovieReleaseYear
 
 class MovieViewHolder private constructor(val binding: PopularMovieAdapterItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -16,7 +16,7 @@ class MovieViewHolder private constructor(val binding: PopularMovieAdapterItemBi
             imageView.loadMovieImage(tmdbMovie.backdropPath)
             tvTitle.text = tmdbMovie.title
             tvRating.text = tmdbMovie.voteAverage.toString()
-            tvReleaseDate.setMovieReleaseDateFormatted(tmdbMovie.releaseDate)
+            tvReleaseDate.text = parseMovieReleaseYear(tmdbMovie.releaseDate)
             tvOverview.text = tmdbMovie.overview
         }
     }

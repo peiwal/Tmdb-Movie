@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.4.10'
+        kotlin_version = '1.5.31'
         version_core = "1.5.0-alpha04"
         version_constraint_layout = "2.0.4"
         version_lifecycle_extensions = "2.2.0"
@@ -22,7 +22,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlint_version"
-
+        classpath 'com.github.bjoernq:unmockplugin:0.7.9'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
