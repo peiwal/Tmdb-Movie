@@ -8,10 +8,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.transition.TransitionInflater
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -25,13 +28,17 @@ import petrov.ivan.tmdb.ui.popularMovies.features.DaggerFragmentPopularMoviesCom
 import petrov.ivan.tmdb.ui.popularMovies.features.FragmentPopularMoviesComponent
 import petrov.ivan.tmdb.ui.popularMovies.features.FragmentPopularMoviesModule
 
+
 class FragmentPopularMovies : BaseFragmentViewModel() {
 
     private lateinit var binding: FragmentPopularMoviesBinding
     private lateinit var viewModel: PopularMoviesViewModel
-    private val itemClickListener = MovieListener { movie ->
-        this.findNavController().navigate(
-            FragmentPopularMoviesDirections.actionFragmentPopularMoviesToFragmentMovieInfo(movie)
+    private val itemClickListener = MovieListener { movie, view ->
+        val extras = FragmentNavigatorExtras(
+            view to movie.id.toString())
+        findNavController().navigate(
+            FragmentPopularMoviesDirections.actionFragmentPopularMoviesToFragmentMovieInfo(movie),
+            extras
         )
     }
     private val fragmentPopularMoviesComponent: FragmentPopularMoviesComponent by lazy(mode = LazyThreadSafetyMode.NONE) {
@@ -59,6 +66,7 @@ class FragmentPopularMovies : BaseFragmentViewModel() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        prepareTransition()
         super.onViewCreated(view, savedInstanceState)
 
         binding.swipeRefreshLayout.setOnRefreshListener {
@@ -73,6 +81,15 @@ class FragmentPopularMovies : BaseFragmentViewModel() {
         binding.recyclerView.apply {
             adapter = fragmentPopularMoviesComponent.getMovieListAdapter()
             setItemViewCacheSize(10)
+        }
+    }
+
+    private fun prepareTransition() {
+        exitTransition = TransitionInflater.from(context)
+            .inflateTransition(android.R.transition.move)
+        postponeEnterTransition()
+        (view?.parent as? ViewGroup)?.doOnPreDraw {
+            startPostponedEnterTransition()
         }
     }
 

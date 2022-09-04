@@ -18,7 +18,7 @@ class MovieListPagingAdapter(val context: Context, val clickListener: MovieListe
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         getItem(position)?.let { item ->
             holder.bind(item)
-            holder.itemView.setOnClickListener { clickListener.onClick(item) }
+            holder.itemView.setOnClickListener { clickListener.onClick(item, holder.imageView) }
         }
     }
 }

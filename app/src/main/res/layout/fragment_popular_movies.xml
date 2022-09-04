@@ -14,14 +14,18 @@
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:clipChildren="false">
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="6dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    android:paddingVertical="10dp"
+                    android:clipToPadding="false"
+                    android:layout_marginHorizontal="10dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/popular_movie_adapter_item"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:layout_width="wrap_content"

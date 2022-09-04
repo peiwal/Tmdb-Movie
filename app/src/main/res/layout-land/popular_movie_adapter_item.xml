@@ -8,13 +8,14 @@
     <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent="0.7">
+            app:layout_constraintWidth_percent="0.7"
+            android:stateListAnimator="@animator/zoom_out_animator">
 
         <include android:id="@+id/movieLayout"
                 android:layout_height="match_parent"

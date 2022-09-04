@@ -31,7 +31,7 @@ class MovieListAdapter(val context: Context, val clickListener: MovieListener) :
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         with(items[position]) {
             holder.bind(this)
-            holder.itemView.setOnClickListener { clickListener.onClick(this) }
+            holder.itemView.setOnClickListener { clickListener.onClick(this, holder.imageView) }
         }
     }
 }

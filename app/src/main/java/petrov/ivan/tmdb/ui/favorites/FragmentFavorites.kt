@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.transition.TransitionInflater
 import petrov.ivan.tmdb.database.FavoritesDatabase
 import petrov.ivan.tmdb.database.FavoritesDatabaseDao
 import petrov.ivan.tmdb.databinding.FragmentFavoritesBinding
@@ -18,9 +21,12 @@ import petrov.ivan.tmdb.ui.favorites.features.FragmentFavoritesModule
 class FragmentFavorites : BaseFragmentViewModel() {
 
     private lateinit var favoritesViewModel: FavoritesViewModel
-    private val itemClickListener = MovieListener { movie ->
+    private val itemClickListener = MovieListener { movie, view ->
+        val extras = FragmentNavigatorExtras(
+            view to movie.id.toString())
         this.findNavController().navigate(
-            FragmentFavoritesDirections.actionFavoritesFragmentToFragmentMovieInfo(movie)
+            FragmentFavoritesDirections.actionFavoritesFragmentToFragmentMovieInfo(movie),
+            extras
         )
     }
     private val fragmentPopularMoviesComponent: FragmentFavoritesComponent by lazy(mode = LazyThreadSafetyMode.NONE) {
@@ -58,6 +64,7 @@ class FragmentFavorites : BaseFragmentViewModel() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        prepareTransition()
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.apply {
@@ -65,5 +72,14 @@ class FragmentFavorites : BaseFragmentViewModel() {
             setItemViewCacheSize(10)
         }
         favoritesViewModel.loadData()
+    }
+
+    private fun prepareTransition() {
+        exitTransition = TransitionInflater.from(context)
+            .inflateTransition(android.R.transition.move)
+        postponeEnterTransition()
+        (view?.parent as? ViewGroup)?.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
     }
 }

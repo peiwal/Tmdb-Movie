@@ -7,9 +7,7 @@
               android:name="petrov.ivan.tmdb.ui.popularMovies.FragmentPopularMovies"
               android:label="@string/app_name">
         <action android:id="@+id/action_fragmentPopularMovies_to_fragmentMovieInfo"
-                app:destination="@id/fragmentMovieInfo" app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left" app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"/>
+                app:destination="@id/fragmentMovieInfo"/>
         <action android:id="@+id/action_fragmentPopularMovies_to_fragmentSearch" app:destination="@id/fragmentSearch"
                 app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left" app:popExitAnim="@anim/slide_out_right"/>
@@ -36,8 +34,6 @@
     <fragment android:id="@+id/favoritesFragment" android:name="petrov.ivan.tmdb.ui.favorites.FragmentFavorites"
               android:label="@string/favorites">
         <action android:id="@+id/action_favoritesFragment_to_fragmentMovieInfo"
-                app:destination="@id/fragmentMovieInfo" app:enterAnim="@anim/slide_in_right"
-                app:popEnterAnim="@anim/slide_in_left" app:exitAnim="@anim/slide_out_left"
-                app:popExitAnim="@anim/slide_out_right"/>
+                app:destination="@id/fragmentMovieInfo"/>
     </fragment>
 </navigation>
