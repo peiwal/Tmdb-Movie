@@ -11,4 +11,5 @@
     <string name="dialog_delete_favorites_title">Удалить из избранных?</string>
     <string name="dialog_delete_button">Удалить</string>
     <string name="dialog_cancel_buttion">Отмена</string>
+    <string name="btnWidgetNext">Следующий</string>
 </resources>

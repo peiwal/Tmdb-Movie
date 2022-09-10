@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:paddingBottom="16dp"
+        android:background="@drawable/widget_background">
+
+    <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/filmstrip"
+            android:scaleType="fitXY"
+            app:layout_constraintDimensionRatio="h,16:9" />
+
+    <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Subtitle"
+            android:text="Мстители: Финал"
+            android:layout_marginHorizontal="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:layout_below="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+            android:id="@+id/tvRatingPref"
+            android:text="@string/fragment_movie_info_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_below="@+id/tvTitle"
+            android:layout_marginStart="@dimen/spacing_normal" />
+
+    <TextView android:id="@+id/tvRating"
+            tools:text="8.6"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_toEndOf="@+id/tvRatingPref"
+            android:layout_below="@+id/tvTitle"/>
+
+    <TextView android:id="@+id/tvReleaseDate"
+            tools:text="2019"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginStart="@dimen/spacing_normal"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_toEndOf="@+id/tvRating"
+            android:layout_below="@+id/tvTitle"/>
+
+    <Button
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btnWidgetNext"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp" />
+</RelativeLayout>

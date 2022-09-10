@@ -2,6 +2,7 @@ package petrov.ivan.tmdb.modules
 
 import dagger.Module
 import dagger.Provides
+import okhttp3.Dns
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -16,12 +17,14 @@ class OkHttpClientModule {
     fun client(): OkHttpClient {
         if (BuildConfig.DEBUG) {
             return OkHttpClient().newBuilder()
+                .dns(Dns.SYSTEM)
                 .cache(null)
                 .addInterceptor(authInterceptor())
                 .addInterceptor(httpLoggingInterceptor())
                 .build()
         } else {
             return OkHttpClient().newBuilder()
+                .dns(Dns.SYSTEM)
                 .cache(null)
                 .addInterceptor(httpLoggingInterceptor())
                 .addInterceptor(authInterceptor())
