@@ -11,13 +11,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import petrov.ivan.tmdb.R
-import petrov.ivan.tmdb.data.TmdbMovie
+import petrov.ivan.tmdb.database.MovieData
 import petrov.ivan.tmdb.service.TmdbApi
 import petrov.ivan.tmdb.ui.popularMovies.repository.MovieRepository
 
 class PopularMoviesViewModel(movieService: TmdbApi, application: Application) : AndroidViewModel(application) {
-    private val _pagingData: MutableLiveData<PagingData<TmdbMovie>> = MutableLiveData<PagingData<TmdbMovie>>(PagingData.empty())
-    val pagingData: LiveData<PagingData<TmdbMovie>> = _pagingData
+    private val _pagingData: MutableLiveData<PagingData<MovieData>> = MutableLiveData<PagingData<MovieData>>(PagingData.empty())
+    val pagingData: LiveData<PagingData<MovieData>> = _pagingData
 
     private val repository = MovieRepository(movieService)
 
@@ -29,7 +29,7 @@ class PopularMoviesViewModel(movieService: TmdbApi, application: Application) : 
         }
     }
 
-    private fun searchRepo(): Flow<PagingData<TmdbMovie>> {
+    private fun searchRepo(): Flow<PagingData<MovieData>> {
         val responseLanguage = getApplication<Application>().getString(R.string.response_language)
         return repository.getSearchResultStream(responseLanguage).cachedIn(viewModelScope)
     }

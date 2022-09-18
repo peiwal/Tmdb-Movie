@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import petrov.ivan.tmdb.data.TmdbMovie
+import petrov.ivan.tmdb.database.MovieData
 import petrov.ivan.tmdb.ui.adapters.diffutils.MovieDiffUtilCallback
 import petrov.ivan.tmdb.ui.adapters.holders.MovieViewHolder
 import petrov.ivan.tmdb.ui.adapters.listeners.MovieListener
 
 class MovieListAdapter(val context: Context, val clickListener: MovieListener) : RecyclerView.Adapter<MovieViewHolder>() {
-    var items = ArrayList<TmdbMovie>()
+    var items = ArrayList<MovieData>()
         set(value) {
             val diffCallback = MovieDiffUtilCallback(field, value)
             val diffResult = DiffUtil.calculateDiff(diffCallback)

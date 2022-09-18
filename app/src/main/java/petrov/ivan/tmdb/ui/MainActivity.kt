@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.action_bar)
         val drawable = ContextCompat.getDrawable(applicationContext, R.drawable.ic_search)
-        toolbar.setOverflowIcon(drawable)
+        toolbar.overflowIcon = drawable
     }
 
     override fun onSupportNavigateUp(): Boolean {

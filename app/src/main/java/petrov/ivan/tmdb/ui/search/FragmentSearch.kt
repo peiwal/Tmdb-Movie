@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
 import petrov.ivan.tmdb.R
 import petrov.ivan.tmdb.databinding.FragmentSearchBinding
 import petrov.ivan.tmdb.service.TmdbApi
@@ -57,22 +58,17 @@ class FragmentSearch : BaseFragmentViewModel() {
     }
 
     override fun registerObservers() {
-        viewModel.let {
-            it.searchItems.observe(
-                this,
-                Observer { value ->
-                    searchFragmentComponent.getSuggestionsAdapter().items = value
+        lifecycleScope.launchWhenStarted {
+            viewModel.searchItems.collect {
+                searchFragmentComponent.getSuggestionsAdapter().items = it
+            }
+            viewModel.eventErrorLoadData.collect { value ->
+                if (value) {
+                    Snackbar.make(searchView, R.string.error_load_data, Snackbar.LENGTH_LONG)
+                        .show()
+                    viewModel.eventErrorLoadData.value = false
                 }
-            )
-            it.eventErrorLoadData.observe(
-                this,
-                Observer { value ->
-                    if (value) {
-                        Snackbar.make(searchView, R.string.error_load_data, Snackbar.LENGTH_LONG).show()
-                        it.eventErrorLoadData.value = false
-                    }
-                }
-            )
+            }
         }
     }
 

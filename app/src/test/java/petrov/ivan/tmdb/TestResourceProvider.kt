@@ -13,7 +13,7 @@ class TestResourceProvider {
 
     @Test
     fun date_presents_correctly() {
-        val context = RuntimeEnvironment.application;
+        val context = RuntimeEnvironment.application
         Assert.assertEquals("ru-RU", context.getString(R.string.response_language))
     }
 }

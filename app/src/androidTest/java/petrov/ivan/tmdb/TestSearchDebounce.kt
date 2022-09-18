@@ -32,7 +32,6 @@ class TestSearchDebounce {
 
     private val TEXT_TO_LOAD = "text_to_load"
 
-
     @Before
     fun init() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -45,10 +44,10 @@ class TestSearchDebounce {
             `when`(tmdbApi.getMovieByQuery(TEXT_TO_LOAD, context.resources.getString(R.string.response_language)))
                 .then {
                     countCallLoad++
-                    countDown.countDown()}
+                    countDown.countDown()
+                }
         }
     }
-
 
     @Test
     fun searchDebounce() {

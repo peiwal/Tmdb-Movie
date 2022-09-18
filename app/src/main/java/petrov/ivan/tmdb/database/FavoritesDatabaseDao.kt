@@ -7,14 +7,14 @@ import androidx.room.Query
 @Dao
 interface FavoritesDatabaseDao {
     @Insert
-    fun insert(movie: MovieDB)
+    fun insert(movie: MovieData)
 
-    @Query("DELETE from favorites_movie WHERE id_imgb = :id_imdb ")
-    fun delete(id_imdb: Int)
+    @Query("DELETE from favorites_movie WHERE id = :id ")
+    fun delete(id: String)
 
     @Query("SELECT * from favorites_movie ORDER BY id_movie desc")
-    fun getAllRecords(): List<MovieDB>?
+    fun getAllRecords(): List<MovieData>?
 
-    @Query("SELECT * from favorites_movie WHERE id_imgb = :id_imdb")
-    fun getById(id_imdb: Int): MovieDB?
+    @Query("SELECT * from favorites_movie WHERE id = :id")
+    fun getById(id: String): MovieData?
 }

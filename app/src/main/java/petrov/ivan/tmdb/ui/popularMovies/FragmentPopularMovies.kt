@@ -28,14 +28,14 @@ import petrov.ivan.tmdb.ui.popularMovies.features.DaggerFragmentPopularMoviesCom
 import petrov.ivan.tmdb.ui.popularMovies.features.FragmentPopularMoviesComponent
 import petrov.ivan.tmdb.ui.popularMovies.features.FragmentPopularMoviesModule
 
-
 class FragmentPopularMovies : BaseFragmentViewModel() {
 
     private lateinit var binding: FragmentPopularMoviesBinding
     private lateinit var viewModel: PopularMoviesViewModel
     private val itemClickListener = MovieListener { movie, view ->
         val extras = FragmentNavigatorExtras(
-            view to movie.id.toString())
+            view to movie.id
+        )
         findNavController().navigate(
             FragmentPopularMoviesDirections.actionFragmentPopularMoviesToFragmentMovieInfo(movie),
             extras

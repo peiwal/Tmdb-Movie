@@ -4,13 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.database.FavoritesDatabaseDao
+import petrov.ivan.tmdb.database.MovieData
 import petrov.ivan.tmdb.ui.utils.launchOnIO
-import petrov.ivan.tmdb.utils.MovieConverter
 
-class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application: Application, movie: TmdbMovie) : AndroidViewModel(application) {
-    val tmdbMovie = MutableLiveData<TmdbMovie>()
+class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application: Application, movie: MovieData) : AndroidViewModel(application) {
+    val tmdbMovie = MutableLiveData<MovieData>()
     val eventNeedShowDialog = MutableLiveData<Boolean>()
     val isFavorite = MutableLiveData<Boolean>()
 
@@ -28,8 +27,8 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
         }
     }
 
-    private fun insertToDatabase(movie: TmdbMovie) {
-        viewModelScope.launchOnIO(runOnIO = { database.insert(MovieConverter.converToMovie(movie)) }) {
+    private fun insertToDatabase(movie: MovieData) {
+        viewModelScope.launchOnIO(runOnIO = { database.insert(movie) }) {
             updateFavoriteValue(movie)
         }
     }
@@ -39,13 +38,13 @@ class MovieInfoViewModel(private val database: FavoritesDatabaseDao, application
         deleteFromDatabase(movie)
     }
 
-    private fun deleteFromDatabase(movie: TmdbMovie) {
+    private fun deleteFromDatabase(movie: MovieData) {
         viewModelScope.launchOnIO(runOnIO = { database.delete(movie.id) }) {
             updateFavoriteValue(movie)
         }
     }
 
-    private fun updateFavoriteValue(movie: TmdbMovie) {
+    private fun updateFavoriteValue(movie: MovieData) {
         viewModelScope.launchOnIO(runOnIO = { database.getById(movie.id) != null }) {
             isFavorite.value = it
         }

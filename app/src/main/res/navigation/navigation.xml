@@ -21,7 +21,7 @@
     </fragment>
     <fragment android:id="@+id/fragmentMovieInfo" android:name="petrov.ivan.tmdb.ui.movieInfo.FragmentMovieInfo"
     >
-        <argument android:name="movieData" app:argType="petrov.ivan.tmdb.data.TmdbMovie"/>
+        <argument android:name="movieData" app:argType="petrov.ivan.tmdb.database.MovieData"/>
     </fragment>
     <fragment android:id="@+id/fragmentSearch" android:name="petrov.ivan.tmdb.ui.search.FragmentSearch"
     >

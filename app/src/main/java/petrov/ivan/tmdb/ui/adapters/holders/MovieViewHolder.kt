@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import petrov.ivan.tmdb.data.TmdbMovie
+import petrov.ivan.tmdb.database.MovieData
 import petrov.ivan.tmdb.databinding.PopularMovieAdapterItemBinding
 import petrov.ivan.tmdb.ui.utils.loadMovieImage
 import petrov.ivan.tmdb.ui.utils.parseMovieReleaseYear
@@ -13,13 +13,13 @@ class MovieViewHolder private constructor(val binding: PopularMovieAdapterItemBi
 
     val imageView by lazy { binding.movieLayout.imageView }
 
-    fun bind(tmdbMovie: TmdbMovie) {
-        ViewCompat.setTransitionName(imageView, tmdbMovie.id.toString())
+    fun bind(tmdbMovie: MovieData) {
+        ViewCompat.setTransitionName(imageView, tmdbMovie.id)
         binding.movieLayout.apply {
             tvOverview.maxLines = 3
-            imageView.loadMovieImage(tmdbMovie.backdropPath)
+            imageView.loadMovieImage(tmdbMovie.imageUrl)
             tvTitle.text = tmdbMovie.title
-            tvRating.text = tmdbMovie.voteAverage.toString()
+            tvRating.text = tmdbMovie.rating.toString()
             tvReleaseDate.text = parseMovieReleaseYear(tmdbMovie.releaseDate)
             tvOverview.text = tmdbMovie.overview
         }

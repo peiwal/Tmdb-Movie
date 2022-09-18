@@ -23,7 +23,8 @@ class FragmentFavorites : BaseFragmentViewModel() {
     private lateinit var favoritesViewModel: FavoritesViewModel
     private val itemClickListener = MovieListener { movie, view ->
         val extras = FragmentNavigatorExtras(
-            view to movie.id.toString())
+            view to movie.id
+        )
         this.findNavController().navigate(
             FragmentFavoritesDirections.actionFavoritesFragmentToFragmentMovieInfo(movie),
             extras

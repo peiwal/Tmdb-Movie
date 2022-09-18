@@ -1,11 +1,11 @@
 package petrov.ivan.tmdb.ui.adapters.diffutils
 
 import androidx.recyclerview.widget.DiffUtil
-import petrov.ivan.tmdb.data.TmdbMovie
+import petrov.ivan.tmdb.database.MovieData
 
 class MovieDiffUtilCallback(
-    private val oldList: List<TmdbMovie>,
-    private val newList: List<TmdbMovie>
+    private val oldList: List<MovieData>,
+    private val newList: List<MovieData>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

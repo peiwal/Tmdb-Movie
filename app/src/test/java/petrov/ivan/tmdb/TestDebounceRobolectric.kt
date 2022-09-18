@@ -17,8 +17,7 @@ import petrov.ivan.tmdb.service.TmdbApi
 import petrov.ivan.tmdb.ui.search.SearchViewModel
 import retrofit2.Response
 
-
-private open class TmdbApiImpl: TmdbApi {
+private open class TmdbApiImpl : TmdbApi {
     var countCallLoad: Int = 0
 
     override suspend fun getPopularMovie(language: String, page: Int): TmdbMovieResponse {

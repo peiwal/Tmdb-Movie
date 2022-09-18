@@ -9,16 +9,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.transition.ChangeBounds
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import petrov.ivan.tmdb.R
-import petrov.ivan.tmdb.data.TmdbMovie
 import petrov.ivan.tmdb.database.FavoritesDatabase
 import petrov.ivan.tmdb.database.FavoritesDatabaseDao
+import petrov.ivan.tmdb.database.MovieData
 import petrov.ivan.tmdb.databinding.FragmentMovieInfoBinding
 import petrov.ivan.tmdb.ui.base.BaseFragmentViewModel
 import petrov.ivan.tmdb.ui.utils.loadMovieImage
@@ -27,7 +26,7 @@ import timber.log.Timber
 
 class FragmentMovieInfo : BaseFragmentViewModel() {
 
-    private lateinit var tmdbMovie: TmdbMovie
+    private lateinit var tmdbMovie: MovieData
     private lateinit var dataSource: FavoritesDatabaseDao
     private lateinit var movieInfoViewModel: MovieInfoViewModel
     private lateinit var binding: FragmentMovieInfoBinding
@@ -58,35 +57,38 @@ class FragmentMovieInfo : BaseFragmentViewModel() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewCompat.setTransitionName(binding.movieLayout.imageView, tmdbMovie.id.toString())
+        ViewCompat.setTransitionName(binding.movieLayout.imageView, tmdbMovie.id)
         binding.fbFavorite.setOnClickListener {
             movieInfoViewModel.fbFavoriteClick()
         }
         binding.movieLayout.apply {
-            imageView.loadMovieImage(tmdbMovie.backdropPath, object: RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    startPostponedEnterTransition()
-                    return false
-                }
+            imageView.loadMovieImage(
+                tmdbMovie.imageUrl,
+                object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        startPostponedEnterTransition()
+                        return false
+                    }
 
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    startPostponedEnterTransition()
-                    return false
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        startPostponedEnterTransition()
+                        return false
+                    }
                 }
-            })
+            )
             tvTitle.text = tmdbMovie.title
-            tvRating.text = tmdbMovie.voteAverage.toString()
+            tvRating.text = tmdbMovie.rating.toString()
             tvReleaseDate.text = parseMovieReleaseYear(tmdbMovie.releaseDate)
             tvOverview.text = tmdbMovie.overview
         }

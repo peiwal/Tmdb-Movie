@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViews
-import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +20,7 @@ import petrov.ivan.tmdb.ui.utils.parseMovieReleaseYear
 import javax.inject.Inject
 import kotlin.random.Random
 
-class OneRandomMovieWidget: AppWidgetProvider() {
+class OneRandomMovieWidget : AppWidgetProvider() {
 
     @Inject
     lateinit var tmdbService: TmdbApi
@@ -30,7 +29,6 @@ class OneRandomMovieWidget: AppWidgetProvider() {
 
     private var currentIndex = 0
     private val maxIndex = 20
-
 
     init {
         DaggerTmdbComponents.builder()
@@ -47,14 +45,14 @@ class OneRandomMovieWidget: AppWidgetProvider() {
             appWidgetIds?.forEach { widgetId ->
                 coroutineScope.launch {
                     val language = context.getString(R.string.response_language)
-                    val response = tmdbService.getPopularMovie (language = language, page = 1)
+                    val response = tmdbService.getPopularMovie(language = language, page = 1)
                     if (response.results.size == maxIndex) { // this is ...
                         currentIndex = Random.nextInt(20)
                         response.results.get(currentIndex).let { movie ->
                             val widgetView =
                                 RemoteViews(context.packageName, R.layout.widget_one_random_movie)
                             widgetView.setTextViewText(R.id.tvTitle, movie.title)
-                            widgetView.setTextViewText(R.id.tvRating, movie.voteAverage.toString())
+                            widgetView.setTextViewText(R.id.tvRating, movie.rating.toString())
                             widgetView.setTextViewText(
                                 R.id.tvReleaseDate,
                                 parseMovieReleaseYear(movie.releaseDate)
@@ -69,7 +67,7 @@ class OneRandomMovieWidget: AppWidgetProvider() {
                             try {
                                 val requestFeature = Glide.with(context)
                                     .asBitmap()
-                                    .load(AppConstants.TMDB_PHOTO_URL + movie.backdropPath)
+                                    .load(AppConstants.TMDB_PHOTO_URL + movie.imageUrl)
                                     .submit()
                                 val image = requestFeature.get()
                                 widgetView.setImageViewBitmap(R.id.imageView, image)
@@ -98,7 +96,8 @@ class OneRandomMovieWidget: AppWidgetProvider() {
             updateWidget(appWidgetIds, smallWidgetView, context)
 
             this.onUpdate(
-                context, AppWidgetManager.getInstance(context),
+                context,
+                AppWidgetManager.getInstance(context),
                 appWidgetIds = intArrayOf(appWidgetIds)
             )
         }
