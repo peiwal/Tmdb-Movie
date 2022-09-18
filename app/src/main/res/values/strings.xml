@@ -7,7 +7,8 @@
     <string name="error_load_data">Ошибка загрузки данных</string>
 
     <string name="fragment_movie_info_rating">Рейтинг: </string>
-    <string name="fragment_about_information">Приложение создано в ознакомительных целях и является полностью бесплатным.\n\nСсылка на ресурс с используемым API: themoviedb.org</string>
+    <string name="fragment_about_information">Приложение создано в ознакомительных целях и является полностью бесплатным.\n\nСсылка на ресурс с используемым API:\n</string>
+    <string name="api_url">https://themoviedb.org</string>
     <string name="dialog_delete_favorites_title">Удалить из избранных?</string>
     <string name="dialog_delete_button">Удалить</string>
     <string name="dialog_cancel_buttion">Отмена</string>
